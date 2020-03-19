@@ -1,9 +1,9 @@
 package com.ta.platform.common.web;
 
 import com.ey.tax.toolset.core.StrUtil;
-import com.ta.platform.common.system.model.LoginUserInfo;
+import com.ta.platform.common.system.model.SysPermissionDataRuleModel;
+import com.ta.platform.common.system.model.SysUserCacheInfo;
 import com.ta.platform.common.tool.ApplicationContextProvider;
-import com.ta.platform.modules.system.entity.SysPermissionDataRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -16,55 +16,6 @@ import java.util.List;
  * Description:
  */
 public class WebContext {
-    /**
-     * 用户所属机构Id
-     */
-    public static final String SYS_ORG_ID = "sysOrgId";
-
-    /**
-     * 所属机构编码
-     */
-    public static final String SYS_ORG_CODE = "sysOrgCode";
-
-    /**
-     * 用户所属多机构编码， 值以逗号（，）分隔
-     */
-    public static final String SYS_MULTI_ORG_CODE = "sysMultiOrgCode";
-
-    /**
-     * 用户所属部门
-     */
-    public static final String SYS_DEPART_CODE = "sysDepartCode";
-
-    /**
-     * 用户所属多部门
-     */
-    public static final String SYS_MULTI_DEPART_CODE = "sysMultiDepartCode";
-
-    /**
-     * 系统用户编码（对应登录用户账号）
-     */
-    public static final String SYS_USER_CODE = "sysUserCode";
-
-    /**
-     * 系统用户Id
-     */
-    public static final String SYS_USER_ID = "sysUserId";
-
-    /**
-     * 登录用户真实姓名
-     */
-    public static final String SYS_USER_NAME = "sysUserName";
-
-    /**
-     * 系统日期"yyyy-MM-dd"
-     */
-    public static final String SYS_DATE = "sysDate";
-
-    /**
-     * 系统时间"yyyy-MM-dd HH:mm"
-     */
-    public static final String SYS_DATETIME = "sysDateTime";
 
     public static final String DATA_AUTHOR_RULES = "DATA_AUTHOR_RULES";
 
@@ -78,12 +29,12 @@ public class WebContext {
      * @param request
      * @param dataRules
      */
-    public static void appendDataRuleSearchCondition(HttpServletRequest request, List<SysPermissionDataRule> dataRules) {
-        List<SysPermissionDataRule> menuDataRules = loadPermissionDataRules();
+    public static void appendDataRuleSearchCondition(HttpServletRequest request, List<SysPermissionDataRuleModel> dataRules) {
+        List<SysPermissionDataRuleModel> menuDataRules = loadPermissionDataRules();
         if (menuDataRules == null) {
             menuDataRules = new ArrayList<>();
         }
-        for (SysPermissionDataRule rule : dataRules) {
+        for (SysPermissionDataRuleModel rule : dataRules) {
             menuDataRules.add(rule);
         }
         // 往menuDataRules里面增量存值
@@ -108,8 +59,8 @@ public class WebContext {
      *
      * @return
      */
-    public static List<SysPermissionDataRule> loadPermissionDataRules() {
-        return (List<SysPermissionDataRule>) ApplicationContextProvider.getHttpServletRequest().getAttribute(DATA_AUTHOR_RULES);
+    public static List<SysPermissionDataRuleModel> loadPermissionDataRules() {
+        return (List<SysPermissionDataRuleModel>) ApplicationContextProvider.getHttpServletRequest().getAttribute(DATA_AUTHOR_RULES);
     }
 
     /**
@@ -127,12 +78,12 @@ public class WebContext {
      * @param request
      * @param userInfo
      */
-    public static void installLoginUserInfo(HttpServletRequest request, LoginUserInfo userInfo) {
+    public static void installLoginUserInfo(HttpServletRequest request, SysUserCacheInfo userInfo) {
         request.setAttribute(LOGIN_USER_INFO, userInfo);
     }
 
-    public static LoginUserInfo loadLoginUserInfo() {
-        return (LoginUserInfo) ApplicationContextProvider.getHttpServletRequest().getAttribute(LOGIN_USER_INFO);
+    public static SysUserCacheInfo loadLoginUserInfo() {
+        return (SysUserCacheInfo) ApplicationContextProvider.getHttpServletRequest().getAttribute(LOGIN_USER_INFO);
     }
 
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ta.platform.common.api.vo.GlobalResponse;
 import com.ta.platform.common.aspect.annotation.Dict;
-import com.ta.platform.modules.system.service.ISysDictService;
+import com.ta.platform.common.modules.system.service.ISysDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

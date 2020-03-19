@@ -7,9 +7,10 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ey.tax.toolset.core.StrUtil;
 import com.google.common.base.Joiner;
-import com.ta.platform.common.web.WebContext;
+import com.ta.platform.common.constant.DataBaseConstant;
 import com.ta.platform.common.exception.PlatformException;
-import com.ta.platform.common.system.model.LoginUserInfo;
+import com.ta.platform.common.system.model.SysUserCacheInfo;
+import com.ta.platform.common.web.WebContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -125,7 +126,7 @@ public class JwtUtil {
      * @param user
      * @return
      */
-    public static String getUserSystemData(String key, LoginUserInfo user) {
+    public static String getUserSystemData(String key, SysUserCacheInfo user) {
         if (user == null) {
             user = WebContext.loadLoginUserInfo();
         }
@@ -142,45 +143,52 @@ public class JwtUtil {
             key = key;
         }
 
-        if (key.equals(WebContext.SYS_USER_ID)) {
-            returnValue = user.getUserId();
+        //替换为系统登录用户ID
+        if (key.equals(DataBaseConstant.SYS_USER_ID) || key.equals(DataBaseConstant.SYS_USER_ID_TABLE)) {
+            returnValue = user.getSysUserId();
         }
 
         //替换为系统登录用户帐号
-        if (key.equals(WebContext.SYS_USER_CODE)) {
-            returnValue = user.getUserCode();
+        if (key.equals(DataBaseConstant.SYS_USER_CODE) || key.equals(DataBaseConstant.SYS_USER_CODE_TABLE)) {
+            returnValue = user.getSysUserCode();
         }
         //替换为系统登录用户真实名字
-        if (key.equals(WebContext.SYS_USER_NAME)) {
-            returnValue = user.getUsername();
+        if (key.equals(DataBaseConstant.SYS_USER_NAME) || key.equals(DataBaseConstant.SYS_USER_NAME_TABLE)) {
+            returnValue = user.getSysUserName();
         }
 
-        if (key.equals(WebContext.SYS_ORG_ID)) {
-            returnValue = user.getOrgId();
-        }
 
         //替换为系统用户登录所使用的机构编码
-        if (key.equals(WebContext.SYS_ORG_CODE)) {
-            returnValue = user.getOrgCode();
+        if (key.equals(DataBaseConstant.SYS_ORG_CODE) || key.equals(DataBaseConstant.SYS_ORG_CODE_TABLE)) {
+            returnValue = user.getSysOrgCode();
         }
 
         //替换为系统用户所拥有的所有机构编码
-        if (key.equals(WebContext.SYS_MULTI_ORG_CODE)) {
-            returnValue = Joiner.on(",").join(user.getMultiOrgCode());
+        if (key.equals(DataBaseConstant.SYS_MULTI_ORG_CODE) || key.equals(DataBaseConstant.SYS_MULTI_ORG_CODE_TABLE)) {
+            if(user.isOneDepart()){
+                returnValue = user.getSysMultiOrgCode().get(0);
+            }
+            returnValue = Joiner.on(",").join(user.getSysMultiOrgCode());
         }
 
-        if (key.equals(WebContext.SYS_DEPART_CODE)) {
-            returnValue = user.getDepartCode();
+        if (key.equals(DataBaseConstant.SYS_DEPART_CODE) || key.equals(DataBaseConstant.SYS_DEPART_CODE_TABLE)) {
+            returnValue = user.getSysDepartCode();
         }
 
         //替换为当前系统时间(年月日)
-        if (key.equals(WebContext.SYS_DATE)) {
+        if (key.equals(DataBaseConstant.SYS_DATE) || key.equals(DataBaseConstant.SYS_DATE_TABLE)) {
             returnValue = user.getSysDate();
         }
         //替换为当前系统时间（年月日时分秒）
-        if (key.equals(WebContext.SYS_DATETIME)) {
-            returnValue = user.getSysDateTime();
+        if (key.equals(DataBaseConstant.SYS_TIME) || key.equals(DataBaseConstant.SYS_TIME_TABLE)) {
+            returnValue = user.getSysTime();
         }
+
+        //流程状态默认值（默认未发起）
+        else if (key.equals(DataBaseConstant.BPM_STATUS)|| key.equals(DataBaseConstant.BPM_STATUS_TABLE)) {
+            returnValue = "1";
+        }
+
         if (returnValue != null) {
             returnValue = returnValue + moshi;
         }
