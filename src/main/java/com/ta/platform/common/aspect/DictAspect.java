@@ -7,7 +7,7 @@ import com.ey.tax.toolset.core.StrUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ta.platform.common.api.vo.GlobalResponse;
+import com.ta.platform.common.api.vo.Result;
 import com.ta.platform.common.aspect.annotation.Dict;
 import com.ta.platform.common.modules.system.service.ISysDictService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class DictAspect {
     @Autowired
     private ISysDictService dictService;
 
-    @Pointcut("execution(public * com.ta.platform.modules..*.*Controller.*(..))")
+    @Pointcut("execution(public * com.ta.platform..*.*Controller.*(..))")
     public void executionService(){}
 
     @Around("executionService()")
@@ -55,10 +55,10 @@ public class DictAspect {
     }
 
     private void parseDictText(Object result){
-        if(result instanceof GlobalResponse){
-            if(((GlobalResponse) result).getData() instanceof IPage){
+        if(result instanceof Result){
+            if(((Result) result).getResult() instanceof IPage){
                 List<JSONObject> items = new ArrayList<>();
-                for(Object record : ((IPage) ((GlobalResponse) result).getData()).getRecords()){
+                for(Object record : ((IPage) ((Result) result).getResult()).getRecords()){
                     ObjectMapper mapper = new ObjectMapper();
                     String json = "{}";
                     try {
@@ -93,7 +93,7 @@ public class DictAspect {
                     }
                     items.add(item);
                 }
-                ((IPage) ((GlobalResponse) result).getData()).setRecords(items);
+                ((IPage) ((Result) result).getResult()).setRecords(items);
             }
         }
     }

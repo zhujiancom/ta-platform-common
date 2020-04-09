@@ -46,4 +46,20 @@
 	<select id="queryAllUserBackDictModel" resultType="com.ta.platform.common.system.model.DictModel">
 		select username as value,realname as text from t_sys_depart where del_flag = '0'
 	</select>
+
+	<!--通过查询指定table的 text code 获取字典（指定查询条件）-->
+	<select id="queryTableDictItemsByCodeAndFilter" parameterType="String"  resultType="com.ta.platform.common.system.model.DictModel">
+		select ${text} as "text",${code} as "value" from ${table}
+		<if test="filterSql != null and filterSql != ''">
+			where ${filterSql}
+		</if>
+	</select>
+
+	<!--通过查询指定table的 text code key 获取字典值，包含value-->
+	<select id="queryTableDictByKeys" parameterType="String" resultType="com.ta.platform.common.system.model.DictModel">
+		select ${text} as "text", ${code} as "value" from ${table} where ${code} in
+		<foreach item="key" collection="keyArray" open="(" separator="," close=")">
+			#{key}
+		</foreach>
+	</select>
 </mapper>

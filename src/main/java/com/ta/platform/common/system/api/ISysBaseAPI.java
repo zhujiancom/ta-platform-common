@@ -13,9 +13,6 @@ import java.util.Map;
 
 /**
  * @Description: 底层共通业务API，提供其他独立模块调用
- * @Author: scott
- * @Date:2019-4-20
- * @Version:V1.0
  */
 public interface ISysBaseAPI {
 
@@ -42,7 +39,7 @@ public interface ISysBaseAPI {
      * @param id
      * @return
      */
-    public LoginUser getUserById(String id);
+    LoginUser getUserById(String id);
 
     /**
      * 通过用户账号查询角色集合
@@ -271,15 +268,4 @@ public interface ISysBaseAPI {
      * @return
      */
     List<String> getDeptHeadByDepId(String deptId);
-
-    /**
-     * 文件上传
-     *
-     * @param file       文件
-     * @param bizPath    自定义路径
-     * @param uploadType 上传方式
-     * @return
-     */
-    String upload(MultipartFile file, String bizPath, String uploadType);
-
 }

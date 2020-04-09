@@ -17,7 +17,15 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class DictModel implements Serializable {
 
-    private static final long serialVersionUID = 7104954756419382759L;
+    private static final long serialVersionUID = 1L;
+
+    public DictModel() {
+    }
+
+    public DictModel(String value, String text) {
+        this.value = value;
+        this.text = text;
+    }
 
     /**
      * 字典项值

@@ -49,4 +49,7 @@ public interface ISysDictService extends IService<SysDict> {
      */
     List<DictModel> queryAllUserBackDictModel();
 
+    List<DictModel> queryTableDictItemsByCodeAndFilter(String table, String text, String code, String filterSql);
+
+    List<String> queryTableDictByKeys(String table, String text, String code, String[] keyArray);
 }

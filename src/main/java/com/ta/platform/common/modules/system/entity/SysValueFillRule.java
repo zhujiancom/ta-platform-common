@@ -23,8 +23,8 @@ import java.util.Date;
 @TableName("t_sys_value_gen_rule")
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value = "sys_value_gen_rule对象", description = "填值规则")
-public class SysValueGenRule {
+@ApiModel(value = "sys_value_fill_rule对象", description = "填值规则")
+public class SysValueFillRule {
     /**
      * 主键ID
      */

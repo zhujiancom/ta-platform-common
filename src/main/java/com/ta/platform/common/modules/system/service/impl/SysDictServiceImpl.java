@@ -1,6 +1,7 @@
 package com.ta.platform.common.modules.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ta.platform.common.constant.CacheConstant;
 import com.ta.platform.common.modules.system.entity.SysDictItem;
 import com.ta.platform.common.modules.system.mapper.SysDictItemMapper;
 import com.ta.platform.common.modules.system.service.ISysDictService;
@@ -13,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -115,5 +117,37 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public List<DictModel> queryAllUserBackDictModel() {
         return baseMapper.queryAllUserBackDictModel();
+    }
+
+    @Override
+    public List<DictModel> queryTableDictItemsByCodeAndFilter(String table, String text, String code, String filterSql) {
+        log.info("无缓存dictTableList的时候调用这里！");
+        return sysDictMapper.queryTableDictItemsByCodeAndFilter(table,text,code,filterSql);
+    }
+
+    /**
+     * 通过查询指定table的 text code 获取字典，包含text和value
+     * dictTableCache采用redis缓存有效期10分钟
+     * @param table
+     * @param text
+     * @param code
+     * @param keyArray
+     * @return
+     */
+    @Override
+    @Cacheable(value = CacheConstant.SYS_DICT_TABLE_CACHE)
+    public List<String> queryTableDictByKeys(String table, String text, String code, String[] keyArray) {
+        List<DictModel> dicts = sysDictMapper.queryTableDictByKeys(table, text, code, keyArray);
+        List<String> texts = new ArrayList<>(dicts.size());
+        // 查询出来的顺序可能是乱的，需要排个序
+        for (String key : keyArray) {
+            for (DictModel dict : dicts) {
+                if (key.equals(dict.getValue())) {
+                    texts.add(dict.getText());
+                    break;
+                }
+            }
+        }
+        return texts;
     }
 }
