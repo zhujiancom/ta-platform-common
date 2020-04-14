@@ -208,4 +208,6 @@ public final class CommonConstant {
      */
     public static final Integer USER_IDENTITY_1 = 1;
     public static final Integer USER_IDENTITY_2 = 2;
+
+    public static final Integer TOKEN_INVALID = 10001;
 }

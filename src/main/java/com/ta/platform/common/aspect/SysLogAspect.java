@@ -94,7 +94,7 @@ public class SysLogAspect {
             /**
              * 远程调用核心服务保存日志
              */
-            sysLogFactory.createSysLog(logModelBuilder.build());
+            sysLogFactory.addLog(logModelBuilder.build());
 
             log.debug("------- {}打印日志[结束]-----------", point.getSignature().getName());
         } finally {

@@ -18,7 +18,7 @@ public class SysLogFactory {
     @Autowired
     private GatewayAPIClient gatewayAPIClient;
 
-    public void createSysLog(SysLogModel model){
+    public void addLog(SysLogModel model){
         gatewayAPIClient.createSysLog(model);
     }
 }
