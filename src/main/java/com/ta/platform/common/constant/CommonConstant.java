@@ -91,9 +91,10 @@ public final class CommonConstant {
      */
     public static final Integer MENU_TYPE_2  = 2;
 
-    /**通告对象类型（USER:指定用户，ALL:全体用户）*/
-    public static final String MSG_TYPE_UESR  = "USER";
-    public static final String MSG_TYPE_ALL  = "ALL";
+    /**通告对象类型（USER:指定用户，ALL:全体用户, ROLE:指定角色）*/
+    public static final String RECEIVER_TYPE_USER  = "USER";
+    public static final String RECEIVER_TYPE_ROLE  = "ROLE";
+    public static final String RECEIVER_TYPE_ALL  = "ALL";
 
     /**发布状态（0未发布，1已发布，2已撤销）*/
     public static final String NO_SEND  = "0";
@@ -131,8 +132,11 @@ public final class CommonConstant {
     /**
      * 消息类型1:通知公告2:系统消息
      */
-    public static final String MSG_CATEGORY_1 = "1";
-    public static final String MSG_CATEGORY_2 = "2";
+    public static final String CATEGORY_ANNOUNCE = "1";
+    public static final String CATEGORY_NOTICE = "2";
+    public static final String UNPUBLISHED_STATE="0";
+    public static final String PUBLISHED_STATE="1";
+    public static final String REVOKE_STATE="2";
 
     /**
      * 是否配置菜单的数据权限 1是0否

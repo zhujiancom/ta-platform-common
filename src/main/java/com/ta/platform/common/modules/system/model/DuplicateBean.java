@@ -18,7 +18,7 @@ public class DuplicateBean implements Serializable {
     /**
      * 表名
      */
-    @ApiModelProperty(value="表名",name="tableName",example="sys_log")
+    @ApiModelProperty(value="表名",name="tableName",example="t_sys_log")
     private String tableName;
 
     /**

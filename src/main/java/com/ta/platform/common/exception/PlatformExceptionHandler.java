@@ -2,8 +2,6 @@ package com.ta.platform.common.exception;
 
 import com.ta.platform.common.api.vo.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,11 +37,11 @@ public class PlatformExceptionHandler {
         return Result.error("数据库中已存在该记录");
     }
 
-    @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
-    public Result<?> handleAuthorizationException(AuthorizationException e){
-        log.error(e.getMessage(), e);
-        return Result.error("没有权限，请联系管理员授权");
-    }
+//    @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
+//    public Result<?> handleAuthorizationException(AuthorizationException e){
+//        log.error(e.getMessage(), e);
+//        return Result.error("没有权限，请联系管理员授权");
+//    }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Result<?> HttpRequestMethodNotSupportedException(Exception e){

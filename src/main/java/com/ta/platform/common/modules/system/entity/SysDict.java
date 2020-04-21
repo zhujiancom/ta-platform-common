@@ -16,6 +16,7 @@ import java.util.Date;
  * Time: 12:13 PM
  * Description: 字典表
  */
+@TableName("t_sys_dict")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)

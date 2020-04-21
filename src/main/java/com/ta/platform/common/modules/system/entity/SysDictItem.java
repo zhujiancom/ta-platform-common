@@ -17,6 +17,7 @@ import java.util.Date;
  * Time: 2:50 PM
  * Description:
  */
+@TableName("t_dict_item")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)

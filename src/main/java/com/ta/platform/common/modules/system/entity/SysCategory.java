@@ -2,6 +2,7 @@ package com.ta.platform.common.modules.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 /**
  * @Description: 分类字典
  */
+@TableName("t_sys_category")
 @Data
 public class SysCategory implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -166,13 +166,6 @@
             <version>${fastjson.version}</version>
         </dependency>
 
-        <!--shiro-->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring-boot-starter</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-
         <!-- Swagger API文档 -->
         <dependency>
             <groupId>io.springfox</groupId>

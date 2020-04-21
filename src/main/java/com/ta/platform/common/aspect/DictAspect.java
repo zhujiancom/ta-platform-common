@@ -76,7 +76,7 @@ public class DictAspect {
                             String key = String.valueOf(item.get(field.getName()));
                             String textValue=null;
                             log.info(" 字典 key : "+ key);
-                            if(StrUtil.isEmpty(table)){
+                            if(!StrUtil.isEmpty(table)){
                                 textValue = dictService.queryTableDictTextByKey(table,text,code,key);
                             }else {
                                 textValue = dictService.queryDictTextByKey(code, key);
