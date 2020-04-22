@@ -37,11 +37,7 @@ public class DictModel implements Serializable {
      */
     private String text;
 
-    /**
-     * 前端展示用
-     * @return
-     */
-    public String getTitle(){
+    public String getTitle() {
         return this.text;
     }
 }
