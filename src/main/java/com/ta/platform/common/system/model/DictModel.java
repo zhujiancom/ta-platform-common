@@ -1,7 +1,10 @@
 package com.ta.platform.common.system.model;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -13,19 +16,11 @@ import java.io.Serializable;
  * Description: 字典项模型
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class DictModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    public DictModel() {
-    }
-
-    public DictModel(String value, String text) {
-        this.value = value;
-        this.text = text;
-    }
 
     /**
      * 字典项值
@@ -36,6 +31,11 @@ public class DictModel implements Serializable {
      * 字典项文本
      */
     private String text;
+
+    /**
+     * 字典类型， 前端select需要区分整型还是文本， 否则无法显示正确的文本
+     */
+    private Integer type;
 
     public String getTitle() {
         return this.text;
