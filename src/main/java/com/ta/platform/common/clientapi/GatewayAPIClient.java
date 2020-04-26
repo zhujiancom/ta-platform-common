@@ -1,6 +1,5 @@
 package com.ta.platform.common.clientapi;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ta.platform.common.api.vo.Result;
 import com.ta.platform.common.system.model.SysLogModel;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Creator: zhuji
@@ -22,5 +22,8 @@ public interface GatewayAPIClient {
     void createSysLog(@RequestBody SysLogModel sysLogModel);
 
     @RequestMapping(value = "/core/authc/sys/user/all-list", method = RequestMethod.POST)
-    Result<JSONObject> getAllSysUser();
+    Result<Object> getAllSysUser();
+
+    @RequestMapping(value = "/authc/api/auth/user", method = RequestMethod.GET, produces = {"application/*"}, consumes = {"text/plain", "application/*"})
+    Result<Object> getLoginUser(@RequestParam(value = "token") String token);
 }

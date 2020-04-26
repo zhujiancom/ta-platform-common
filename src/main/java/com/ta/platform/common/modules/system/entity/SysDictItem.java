@@ -17,7 +17,7 @@ import java.util.Date;
  * Time: 2:50 PM
  * Description:
  */
-@TableName("t_dict_item")
+@TableName("t_sys_dict_item")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -59,7 +59,7 @@ public class SysDictItem implements Serializable {
     /**
      * 状态（1启用 0不启用）
      */
-    @Dict(dictCode = "dict_item_status")
+    @Dict(dictCode = "valid_status")
     private Integer status;
 
     private String createBy;
