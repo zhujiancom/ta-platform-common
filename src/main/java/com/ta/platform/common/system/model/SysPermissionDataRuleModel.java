@@ -1,5 +1,12 @@
 package com.ta.platform.common.system.model;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,8 +15,13 @@ import java.util.Date;
  * </p>
  *
  */
-public class SysPermissionDataRuleModel {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+public class SysPermissionDataRuleModel implements Serializable {
 
+    private static final long serialVersionUID = -1111045974120618804L;
     /**
      * id
      */
@@ -59,84 +71,4 @@ public class SysPermissionDataRuleModel {
      * 修改人
      */
     private String updateBy;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPermissionId() {
-        return permissionId;
-    }
-
-    public void setPermissionId(String permissionId) {
-        this.permissionId = permissionId;
-    }
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
-
-    public String getRuleColumn() {
-        return ruleColumn;
-    }
-
-    public void setRuleColumn(String ruleColumn) {
-        this.ruleColumn = ruleColumn;
-    }
-
-    public String getRuleConditions() {
-        return ruleConditions;
-    }
-
-    public void setRuleConditions(String ruleConditions) {
-        this.ruleConditions = ruleConditions;
-    }
-
-    public String getRuleValue() {
-        return ruleValue;
-    }
-
-    public void setRuleValue(String ruleValue) {
-        this.ruleValue = ruleValue;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
 }

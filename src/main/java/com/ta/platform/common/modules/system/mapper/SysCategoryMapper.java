@@ -2,7 +2,7 @@ package com.ta.platform.common.modules.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ta.platform.common.modules.system.entity.SysCategory;
-import com.ta.platform.common.modules.system.model.TreeSelectModel;
+import com.ta.platform.common.system.model.TreeSelectModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

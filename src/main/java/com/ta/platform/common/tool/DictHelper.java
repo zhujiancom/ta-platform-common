@@ -7,6 +7,8 @@ import com.ey.tax.toolset.core.ReflectUtil;
 import com.ey.tax.toolset.core.StrUtil;
 import com.ey.tax.toolset.core.TypeUtil;
 import com.ey.tax.toolset.core.collection.CollectionUtil;
+import com.ey.tax.toolset.core.date.DatePattern;
+import com.ey.tax.toolset.core.date.DateUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,19 +61,24 @@ public class DictHelper {
             try {
                 //date类型默认转换string格式化日期
                 if (field.getType().getName().equals("java.util.Date") && field.getAnnotation(JsonFormat.class) == null && item.get(field.getName()) != null) {
-                    SimpleDateFormat aDate = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-                    item.put(field.getName(), aDate.format(new Date((Long) item.get(field.getName()))));
+                    item.put(field.getName(), DateUtil.format(new Date((Long) item.get(field.getName())), DatePattern.NORM_DATETIME_PATTERN));
                 } else if (dictSupport(field.getType())) {
                     item.put(field.getName(), parseDictField(ReflectUtil.getFieldValue(object, field)));
-                } else if (TypeUtil.getTypeArgument(field.getGenericType()) != null && dictSupport(Class.forName(TypeUtil.getTypeArgument(field.getGenericType()).getTypeName()))) {
-                    Object obj = ReflectUtil.getFieldValue(object, field);
-                    if(obj != null && Collection.class.isAssignableFrom(obj.getClass())){
-                        JSONArray jsonArray = new JSONArray();
-                        ((Collection)obj).stream().forEach(o->{
-                            JSONObject jso = parseDictField(o);
-                            jsonArray.add(jso);
-                        });
-                        item.put(field.getName(), jsonArray);
+                } else if (TypeUtil.getTypeArgument(field.getGenericType()) != null){
+                    String genericTypeName = TypeUtil.getTypeArgument(field.getGenericType()).getTypeName();
+                    if("T".equals(genericTypeName)){
+                        genericTypeName = TypeUtil.getTypeArgument(object.getClass()).getTypeName();
+                    }
+                    if(dictSupport(Class.forName(genericTypeName))){
+                        Object obj = ReflectUtil.getFieldValue(object, field);
+                        if(obj != null && Collection.class.isAssignableFrom(obj.getClass())){
+                            JSONArray jsonArray = new JSONArray();
+                            ((Collection)obj).stream().forEach(o->{
+                                JSONObject jso = parseDictField(o);
+                                jsonArray.add(jso);
+                            });
+                            item.put(field.getName(), jsonArray);
+                        }
                     }
                 }
             } catch (ClassNotFoundException e) {
