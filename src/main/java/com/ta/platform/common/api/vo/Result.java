@@ -26,12 +26,12 @@ public class Result<T> implements Serializable {
 	 * 返回处理消息
 	 */
 	@ApiModelProperty(value = "返回处理消息")
-	private String message = "OK！";
+	private String message = "OK!";
 
 	/**
 	 * 返回代码
 	 */
-	@ApiModelProperty(value = "返回代码")
+	@ApiModelProperty(value = "返回代码", example = "200: ok; 500：error")
 	private Integer code = 0;
 	
 	/**
