@@ -1,6 +1,7 @@
 package com.ta.platform.common.factory;
 
 import com.ta.platform.common.clientapi.GatewayAPIClient;
+import com.ta.platform.common.service.ISysBaseService;
 import com.ta.platform.common.system.model.SysLogModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,11 @@ public class SysLogFactory {
     @Autowired
     private GatewayAPIClient gatewayAPIClient;
 
+    @Autowired
+    private ISysBaseService sysBaseService;
+
     public void addLog(SysLogModel model){
-        gatewayAPIClient.createSysLog(model);
+//        gatewayAPIClient.createSysLog(model);
+        sysBaseService.addLog(model);
     }
 }

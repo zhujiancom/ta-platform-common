@@ -3,9 +3,8 @@ package com.ta.platform.common.system.api;
 import com.alibaba.fastjson.JSONObject;
 import com.ta.platform.common.system.model.ComboModel;
 import com.ta.platform.common.system.model.DictModel;
-import com.ta.platform.common.system.model.LoginUser;
+import com.ta.platform.common.vo.LoginUserVo;
 import com.ta.platform.common.system.model.SysCategoryModel;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -31,7 +30,7 @@ public interface ISysBaseAPI {
      * @param username
      * @return
      */
-    LoginUser getUserByName(String username);
+    LoginUserVo getUserByName(String username);
 
     /**
      * 根据用户id查询用户信息
@@ -39,7 +38,7 @@ public interface ISysBaseAPI {
      * @param id
      * @return
      */
-    LoginUser getUserById(String id);
+    LoginUserVo getUserById(String id);
 
     /**
      * 通过用户账号查询角色集合
@@ -74,34 +73,11 @@ public interface ISysBaseAPI {
     String getDatabaseType() throws SQLException;
 
     /**
-     * 获取数据字典
-     *
-     * @param code
-     * @return
-     */
-    List<DictModel> queryDictItemsByCode(String code);
-
-    /**
-     * 查询所有的父级字典，按照create_time排序
-     */
-    List<DictModel> queryAllDict();
-
-    /**
      * 查询所有分类字典
      *
      * @return
      */
     List<SysCategoryModel> queryAllDSysCategory();
-
-    /**
-     * 获取表数据字典
-     *
-     * @param table
-     * @param text
-     * @param code
-     * @return
-     */
-    List<DictModel> queryTableDictItemsByCode(String table, String text, String code);
 
     /**
      * 查询所有部门 作为字典信息 id -->value,departName -->text
@@ -252,14 +228,6 @@ public interface ISysBaseAPI {
      * @return
      */
     String getDepartIdsByOrgCode(String orgCode);
-
-    /**
-     * 查询上一级部门
-     *
-     * @param departId
-     * @return
-     */
-    DictModel getParentDepartId(String departId);
 
     /**
      * 根据部门Id获取部门负责人

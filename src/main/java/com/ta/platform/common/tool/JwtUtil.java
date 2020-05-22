@@ -3,24 +3,30 @@ package com.ta.platform.common.tool;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ey.tax.toolset.core.PropertyUtil;
+import com.ey.tax.toolset.core.RandomUtil;
 import com.ey.tax.toolset.core.StrUtil;
+import com.fasterxml.uuid.impl.UUIDUtil;
 import com.google.common.base.Joiner;
 import com.ta.platform.common.constant.DataBaseConstant;
+import com.ta.platform.common.constant.RequestConstant;
 import com.ta.platform.common.exception.PlatformException;
 import com.ta.platform.common.system.model.SysUserCacheInfo;
 import com.ta.platform.common.web.WebContext;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.time.DateUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.Duration;
 import java.util.Date;
 
 /**
- * @Author Scott
- * @Date 2018-07-12 14:23
- * @Desc JWT工具类
- **/
+ * JWT 工具类
+ */
+@Slf4j
 public class JwtUtil {
 
     // 过期时间30分钟
@@ -40,10 +46,13 @@ public class JwtUtil {
             JWTVerifier verifier = JWT.require(algorithm).withClaim("username", username).build();
             // 效验TOKEN
             DecodedJWT jwt = verifier.verify(token);
-            return true;
+            if (jwt != null) {
+                return true;
+            }
         } catch (Exception exception) {
-            return false;
+            log.error("Verify Token Exception", exception);
         }
+        return false;
     }
 
     /**
@@ -52,12 +61,14 @@ public class JwtUtil {
      * @return token中包含的用户名
      */
     public static String getUsername(String token) {
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("username").asString();
-        } catch (JWTDecodeException e) {
+        if (StrUtil.isBlank(token)) {
             return null;
         }
+        DecodedJWT decodedJWT = getJwtInfo(token);
+        if (decodedJWT == null) {
+            return null;
+        }
+        return decodedJWT.getClaim("username").asString();
     }
 
     /**
@@ -72,7 +83,53 @@ public class JwtUtil {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         // 附带username信息
         return JWT.create().withClaim("username", username).withExpiresAt(date).sign(algorithm);
+    }
 
+    /**
+     * @param username       用户名
+     * @param secret         用户密码
+     * @param expireDuration 过期时间
+     * @return
+     */
+    public static String sign(String username, String secret, Duration expireDuration) {
+        try {
+            if (StrUtil.isBlank(username)) {
+                log.error("username不能为空");
+                return null;
+            }
+            log.debug("username:{}", username);
+
+            if (StrUtil.isBlank(secret)) {
+                secret = PropertyUtil.getString("platform.jwt.secret");
+            }
+
+            log.debug("secret:{}", secret);
+
+            // 过期时间，单位：秒
+            Long expireSecond;
+            // 默认过期时间为1小时
+            if (expireDuration == null) {
+                expireSecond = PropertyUtil.getLong("platform.jwt.expiresecond");
+            } else {
+                expireSecond = expireDuration.getSeconds();
+            }
+            log.debug("expireSecond:{}", expireSecond);
+            Date expireDate = DateUtils.addSeconds(new Date(), expireSecond.intValue());
+            log.debug("expireDate:{}", expireDate);
+
+            // 生成token
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            String token = JWT.create()
+                    .withClaim("username", username)
+                    .withJWTId(RandomUtil.getUUIDBaseOnV2())
+                    .withIssuedAt(new Date())       // 签名时间
+                    .withExpiresAt(expireDate)      // 过期时间
+                    .sign(algorithm);
+            return token;
+        } catch (Exception e) {
+            log.error("generate token occurs error.", e);
+        }
+        return null;
     }
 
     /**
@@ -82,8 +139,8 @@ public class JwtUtil {
      * @return
      * @throws PlatformException
      */
-    public static String getUserNameByToken(HttpServletRequest request) throws PlatformException {
-        String accessToken = request.getHeader("X-Access-Token");
+    public static String getUserNameByRequest(HttpServletRequest request) throws PlatformException {
+        String accessToken = request.getHeader(RequestConstant.X_ACCESS_TOKEN);
         String username = getUsername(accessToken);
         if (StrUtil.isEmpty(username)) {
             throw new PlatformException("未获取到用户");
@@ -165,7 +222,7 @@ public class JwtUtil {
 
         //替换为系统用户所拥有的所有机构编码
         if (key.equals(DataBaseConstant.SYS_MULTI_ORG_CODE) || key.equals(DataBaseConstant.SYS_MULTI_ORG_CODE_TABLE)) {
-            if(user.isOneDepart()){
+            if (user.isOneDepart()) {
                 returnValue = user.getSysMultiOrgCode().get(0);
             }
             returnValue = Joiner.on(",").join(user.getSysMultiOrgCode());
@@ -185,7 +242,7 @@ public class JwtUtil {
         }
 
         //流程状态默认值（默认未发起）
-        else if (key.equals(DataBaseConstant.BPM_STATUS)|| key.equals(DataBaseConstant.BPM_STATUS_TABLE)) {
+        else if (key.equals(DataBaseConstant.BPM_STATUS) || key.equals(DataBaseConstant.BPM_STATUS_TABLE)) {
             returnValue = "1";
         }
 
@@ -193,5 +250,70 @@ public class JwtUtil {
             returnValue = returnValue + moshi;
         }
         return returnValue;
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @param token
+     * @return
+     */
+    public static Date getIssuedAt(String token) {
+        DecodedJWT decodedJwt = getJwtInfo(token);
+        if (decodedJwt == null) {
+            return null;
+        }
+        return decodedJwt.getIssuedAt();
+    }
+
+    /**
+     * 获取过期时间
+     *
+     * @param token
+     * @return
+     */
+    public static Date getExpireDate(String token) {
+        DecodedJWT decodedJWT = getJwtInfo(token);
+        if (decodedJWT == null) {
+            return null;
+        }
+        return decodedJWT.getExpiresAt();
+    }
+
+    /**
+     * 解析token，获取token数据
+     *
+     * @param token
+     * @return
+     */
+    public static DecodedJWT getJwtInfo(String token) {
+        return JWT.decode(token);
+    }
+
+    public static boolean isExpired(String token) {
+        Date expireDate = getExpireDate(token);
+        if (expireDate == null) {
+            return true;
+        }
+        return expireDate.before(new Date());
+    }
+
+    /**
+     * 从请求头或者请求参数中
+     *
+     * @param request
+     * @return
+     */
+    public static String getToken(HttpServletRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("request不能为空");
+        }
+        // 从请求头中获取token
+        String token = request.getHeader(RequestConstant.X_ACCESS_TOKEN);
+        if (StrUtil.isBlank(token)) {
+            // 从请求参数中获取token
+            token = request.getParameter(RequestConstant.X_ACCESS_TOKEN);
+        }
+        return token;
     }
 }

@@ -2,11 +2,9 @@ package com.ta.platform.common.tool;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ey.tax.toolset.core.ClassUtil;
 import com.ey.tax.toolset.core.ReflectUtil;
 import com.ey.tax.toolset.core.StrUtil;
 import com.ey.tax.toolset.core.TypeUtil;
-import com.ey.tax.toolset.core.collection.CollectionUtil;
 import com.ey.tax.toolset.core.date.DatePattern;
 import com.ey.tax.toolset.core.date.DateUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,11 +12,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ta.platform.common.aspect.annotation.Dict;
 import com.ta.platform.common.aspect.annotation.DictSupport;
-import com.ta.platform.common.modules.system.service.ISysDictService;
+import com.ta.platform.common.module.service.ISysDictService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 

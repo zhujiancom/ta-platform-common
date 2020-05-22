@@ -55,7 +55,7 @@ public class SysLogModel implements Serializable {
     private String requestUrl;
 
     /**
-     * 日志解绑
+     * 日志级别
      */
     private LogLevel logLevel;
 
@@ -86,7 +86,8 @@ public class SysLogModel implements Serializable {
     private String loginAccount;
 
     /**
-     * 操作类型
+     * 操作类型: 查询， 新建， 删除， 导入， 导出
      */
+    @Dict(dictCode = "operate_type")
     private Integer operateType;
 }

@@ -35,4 +35,6 @@ public @interface SysLog {
      * @return
      */
     LogLevel logLevel() default LogLevel.INFO;
+
+    int operateType() default 0;
 }
