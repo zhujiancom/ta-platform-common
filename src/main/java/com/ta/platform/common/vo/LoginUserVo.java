@@ -104,6 +104,12 @@ public class LoginUserVo implements Serializable{
     private Date createTime;
 
     /**
+     * 是否超级管理员， 0：普通用户， 1：超级管理员
+     */
+    @ApiModelProperty("是否超级管理员， 0：普通用户， 1：超级管理员")
+    private Integer superUser;
+
+    /**
      * 身份（1 普通员工 2 上级）
      */
 	@ApiModelProperty("用户身份， 1：普通员工， 2：上级")

@@ -7,6 +7,7 @@ import com.ta.platform.common.system.model.TreeModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <P>
@@ -15,12 +16,12 @@ import java.util.List;
  * 
  */
 public class TreeModelUtil {
-    public static <S,T extends TreeModel> List<T> getTreeModelList(List<S> recordList, String parentId, ITreeModelBuildCallback<S, T> buildCallback){
+    public static <S,T extends TreeModel> List<T> getTreeModelList(List<S> recordList, String parentId, ITreeModelBuildCallback<S, T> buildCallback, Map<String, Object> parameter){
         List<T> tree = new ArrayList<>();
         recordList.stream().filter(p-> buildCallback.filter(p, parentId)).forEach(p->{
-            T treeModel = buildCallback.build(p);
+            T treeModel = buildCallback.build(p,parameter);
             treeModel.setParentId(parentId);
-            List<T> children = getTreeModelList(recordList, treeModel.getKey(), buildCallback);
+            List<T> children = getTreeModelList(recordList, treeModel.getKey(), buildCallback,parameter);
             if(CollectionUtil.isNotEmpty(children)){
                 treeModel.setChildren(children);
                 treeModel.setLeaf(false);

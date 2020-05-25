@@ -2,6 +2,8 @@ package com.ta.platform.common.service;
 
 import com.ta.platform.common.system.model.TreeModel;
 
+import java.util.Map;
+
 /**
  * Creator: zhuji
  * Date: 5/7/2020
@@ -11,5 +13,5 @@ import com.ta.platform.common.system.model.TreeModel;
 public interface ITreeModelBuildCallback<S, T extends TreeModel> {
     boolean filter(S src, String parentId);
 
-    T build(S src);
+    T build(S src, Map<String,Object> parameter);
 }
