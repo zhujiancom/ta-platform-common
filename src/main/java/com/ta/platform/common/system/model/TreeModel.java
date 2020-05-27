@@ -1,6 +1,7 @@
 package com.ta.platform.common.system.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.Map;
  */
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class TreeModel<T> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

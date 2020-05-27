@@ -23,8 +23,8 @@ public interface GatewayAPIClient {
     @RequestMapping(value = "/core/api/syslog/create", method = RequestMethod.POST)
     void createSysLog(@RequestBody SysLogModel sysLogModel);
 
-    @RequestMapping(value = "/core/authc/sys/user/all-list", method = RequestMethod.POST)
-    Result<Object> getAllSysUser();
+    @RequestMapping(value = "/authc/api/user/all-list", method = RequestMethod.GET)
+    Result<String[]> getAllSysUserIds();
 
     @RequestMapping(value = "/authc/api/auth/user", method = RequestMethod.GET, produces = {"application/*"}, consumes = {"text/plain", "application/*"})
     Result<LoginUserRedisVo> getLoginUser(@RequestParam(value = RequestConstant.X_ACCESS_TOKEN) String token);
