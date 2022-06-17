@@ -19,7 +19,7 @@
         <tax-toolset.version>1.0.18</tax-toolset.version>
         <poi.version>3.17</poi.version>
         <druid.version>1.1.10</druid.version>
-        <fastjson.version>1.2.56</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <swagger-version>2.9.2</swagger-version>
         <aliyun.oss.version>3.6.0</aliyun.oss.version>
